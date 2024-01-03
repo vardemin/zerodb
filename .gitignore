@@ -1,0 +1,39 @@
+# Gradle files
+.gradle/
+build/
+local.properties
+
+# Idea
+*.iws
+*.ipr
+*.iml
+.idea/**/*
+!.idea/inspectionProfiles/
+!.idea/inspectionProfiles/**
+!.idea/codeStyles/
+!.idea/codeStyles/**
+!.idea/vcs.xml
+!.idea/dictionaries
+!.idea/dictionaries/*
+
+# Built application files
+*.apk
+*.ap_
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+# Keystore files
+*.jks
+
+# Generated files
+bin/
+gen/
+out/
+
+#Because ugh
+.DS_Store
+
+.vscode

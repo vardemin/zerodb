@@ -1,0 +1,19 @@
+[versions]
+kotlin = "1.9.22"
+kotlinx-io = "0.3.0"
+kotlinx-serialization = "1.6.2"
+concurrent-collections = "2.0.0"
+junit = "4.13.2"
+
+
+[libraries]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlinx-io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
+kotlinx-serialization-cbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "kotlinx-serialization" }
+concurrent-collections = { module = "co.touchlab:stately-concurrent-collections", version.ref = "concurrent-collections" }
+junit = { module = "junit:junit", version.ref = "junit" }
+
+[plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

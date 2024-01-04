@@ -9,7 +9,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "com.vardemin.zero.db"
+group = "com.vardemin.zero"
 version = "0.0.1"
 
 val GITHUB_USER: String by publishProperties
@@ -55,6 +55,13 @@ kotlin {
 }
 
 publishing {
+    publications.withType<MavenPublication> {
+        artifactId = if (name == "kotlinMultiplatform") {
+            "zero-db"
+        } else {
+            "zero-db-$name"
+        }
+    }
     repositories {
         maven {
             setUrl("https://maven.pkg.github.com/vardemin/zerodb")

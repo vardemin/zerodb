@@ -18,7 +18,7 @@ allprojects {
 ```
 ```groovy
 dependencies {
-    implementation("com.vardemin.zero.db:shared:$zeroDbVersion")
+    implementation("com.vardemin.zero:zero-db:$zeroDbVersion")
 }
 ```
 

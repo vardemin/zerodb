@@ -1,8 +1,19 @@
+import org.jetbrains.kotlin.konan.properties.loadProperties
+
+val publishProperties = loadProperties("${rootDir}/publish.properties")
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.kotlinSerialization)
+    id("maven-publish")
 }
+
+group = "com.vardemin.zero.db"
+version = "0.0.1"
+
+val GITHUB_USER: String by publishProperties
+val GITHUB_TOKEN: String by publishProperties
 
 kotlin {
     jvm {
@@ -19,14 +30,14 @@ kotlin {
     cocoapods {
         summary = "Zero DB - simple file based database utilizing Cbor serialization for complex objects"
         homepage = "Link to the Shared Module homepage"
-        version = "0.0.1"
+        version = project.version.toString()
         ios.deploymentTarget = "16.0"
         framework {
             baseName = "shared"
             isStatic = true
         }
     }
-    
+
     sourceSets {
         commonMain.dependencies {
             api(libs.kotlinx.io)
@@ -40,22 +51,17 @@ kotlin {
             implementation(kotlin("test-junit"))
             implementation(libs.junit)
         }
-        /*val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation(libs.junit)
-                // implementation(libs.androix.junit)
-                // implementation(libs.robolectric)
-            }
-        }*/
     }
 }
 
-/*
-android {
-    namespace = "com.vardemin.zero.db"
-    compileSdk = 34
-    defaultConfig {
-        minSdk = 21
+publishing {
+    repositories {
+        maven {
+            setUrl("https://maven.pkg.github.com/vardemin/zerodb")
+            credentials {
+                username = GITHUB_USER
+                password = GITHUB_TOKEN
+            }
+        }
     }
-}*/
+}

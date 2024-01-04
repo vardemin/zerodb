@@ -6,8 +6,20 @@ Currently under development and not recommended for production purposes.
 
 # Usage
 ## 1. Include library
-```kotlin
-// TODO: after release
+### 1.2 From GitHub repository
+```groovy
+allprojects {
+    repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/vardemin/zerodb")
+        }
+    }
+}
+```
+```groovy
+dependencies {
+    implementation("com.vardemin.zero.db:shared:$zeroDbVersion")
+}
 ```
 
 ## 2. Initialize db instance

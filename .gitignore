@@ -2,6 +2,7 @@
 .gradle/
 build/
 local.properties
+publish.properties
 
 # Idea
 *.iws

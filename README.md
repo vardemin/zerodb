@@ -29,7 +29,7 @@ dependencies {
 ## 2. Initialize db instance
 ```kotlin
 val zeroDb = ZeroDb(
-    ZeroDbConfig(
+    SerialZeroDbConfig(
         directory = Path(javaFileDir.path),
         serialFormat = cbor // json, protobuf or any instance of kotlinx.serialization format
     )

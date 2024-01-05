@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.vardemin.zero"
-version = "0.0.1"
+version = "0.0.2"
 
 val GITHUB_USER: String by publishProperties
 val GITHUB_TOKEN: String by publishProperties
@@ -41,7 +41,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.kotlinx.io)
-            implementation(libs.kotlinx.serialization.cbor)
+            implementation(libs.kotlinx.serialization.core)
             implementation(libs.concurrent.collections)
         }
         commonTest.dependencies {
@@ -50,6 +50,7 @@ kotlin {
         jvmTest.dependencies {
             implementation(kotlin("test-junit"))
             implementation(libs.junit)
+            implementation(libs.kotlinx.serialization.cbor)
         }
     }
 }

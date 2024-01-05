@@ -1,24 +1,19 @@
 package com.vardemin.zero.db.config
 
 import kotlinx.io.files.Path
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.cbor.Cbor
-import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.BinaryFormat
+import kotlinx.serialization.SerialFormat
+import kotlinx.serialization.StringFormat
 
 sealed interface ZeroDbConfig
 
-data class ZeroCborFileDbConfig(
+class SerialZeroDbConfig(
     val directory: Path,
-    val ignoreUnknownKeys: Boolean = true,
-    val encodeDefaults: Boolean = true,
-    val serializersModule: SerializersModule? = null
+    val serialFormat: SerialFormat
 ) : ZeroDbConfig {
-    @OptIn(ExperimentalSerializationApi::class)
-    val cbor by lazy {
-        Cbor {
-            ignoreUnknownKeys = this@ZeroCborFileDbConfig.ignoreUnknownKeys
-            encodeDefaults = this@ZeroCborFileDbConfig.encodeDefaults
-            serializersModule = this@ZeroCborFileDbConfig.serializersModule ?: serializersModule
+    init {
+        require(serialFormat is BinaryFormat || serialFormat is StringFormat) {
+            "SerialFormat must be BinaryFormat or StringFormat"
         }
     }
 }

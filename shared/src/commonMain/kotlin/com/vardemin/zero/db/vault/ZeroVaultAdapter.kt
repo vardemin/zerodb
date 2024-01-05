@@ -5,13 +5,13 @@ import com.vardemin.zero.db.exception.ZeroDbException
 object ZeroVaultAdapter {
     inline fun <reified T: Any> read(vault: ZeroVault): T {
         return when(vault) {
-            is CborVault -> vault.read<T>()
+            is SerialZeroVault -> vault.read<T>()
         }
     }
 
     inline fun <reified T: Any> readOrNull(vault: ZeroVault): T? {
         return when(vault) {
-            is CborVault -> try {
+            is SerialZeroVault -> try {
                 vault.read<T>()
             } catch (_: ZeroDbException) {
                 null
@@ -25,7 +25,7 @@ object ZeroVaultAdapter {
 
     inline fun <reified T: Any> write(vault: ZeroVault, value: T) {
         when(vault) {
-            is CborVault -> vault.write(value)
+            is SerialZeroVault -> vault.write(value)
         }
     }
 

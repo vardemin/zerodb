@@ -1,33 +1,37 @@
 package com.vardemin.zero.db.vault
 
-import com.vardemin.zero.db.config.ZeroCborFileDbConfig
+import com.vardemin.zero.db.config.SerialZeroDbConfig
 import com.vardemin.zero.db.exception.InvalidValueException
 import com.vardemin.zero.db.exception.ZeroIOException
 import com.vardemin.zero.db.source.ByteArraySource
 import com.vardemin.zero.db.source.FileSource
 import kotlinx.io.IOException
-import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.cbor.Cbor
+import kotlinx.serialization.StringFormat
 import kotlinx.serialization.decodeFromByteArray
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToByteArray
+import kotlinx.serialization.encodeToString
 
-class CborVault(
+class SerialZeroVault(
     private val name: String,
-    private val config: ZeroCborFileDbConfig
+    private val config: SerialZeroDbConfig
 ) : ZeroVault {
 
-    @OptIn(ExperimentalSerializationApi::class)
-    val cbor get() = config.cbor
+    val serialFormat get() = config.serialFormat
 
     val source: ByteArraySource by lazy {
         FileSource(config.directory, name, "zeroc")
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> read(): T {
         return try {
-            cbor.decodeFromByteArray(source.readBytes())
+            if (serialFormat is BinaryFormat) {
+                (serialFormat as BinaryFormat).decodeFromByteArray(source.readBytes())
+            } else {
+                (serialFormat as StringFormat).decodeFromString(source.readBytes().decodeToString())
+            }
         } catch (ex: IOException) {
             throw ZeroIOException(ex.message, ex.cause)
         } catch (ex: SerializationException) {
@@ -41,10 +45,13 @@ class CborVault(
         source.writeBytes(ByteArray(0))
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> write(value: T) {
         try {
-            source.writeBytes(cbor.encodeToByteArray(value))
+            if (serialFormat is BinaryFormat) {
+                source.writeBytes((serialFormat as BinaryFormat).encodeToByteArray(value))
+            } else {
+                source.writeBytes((serialFormat as StringFormat).encodeToString(value).encodeToByteArray())
+            }
         } catch (ex: IOException) {
             throw ZeroIOException(ex.message, ex.cause)
         } catch (ex: SerializationException) {

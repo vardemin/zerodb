@@ -12,6 +12,10 @@ allprojects {
     repositories {
         maven {
             url = uri("https://maven.pkg.github.com/vardemin/zerodb")
+            credentials {
+                username = GITHUB_USER
+                password = GITHUB_TOKEN
+            }
         }
     }
 }
@@ -25,8 +29,9 @@ dependencies {
 ## 2. Initialize db instance
 ```kotlin
 val zeroDb = ZeroDb(
-    ZeroCborFileDbConfig(
-        directory = Path(javaFileDir.path)
+    ZeroDbConfig(
+        directory = Path(javaFileDir.path),
+        serialFormat = cbor // json, protobuf or any instance of kotlinx.serialization format
     )
 )
 ```
@@ -45,7 +50,7 @@ zeroDb.remove("key") // Remove key (key file content)
 Based on [kotlinx-io](https://github.com/Kotlin/kotlinx-io) implementation. (Distributed along with sources)
 
 ## Serialization
-ZeroDB uses [CBOR](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/formats.md#byte-arrays-and-cbor-data-types) format from [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization).
+ZeroDB can use any format from [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization). Strings encoded to and decoded from byte array in case of StringFormat like Json.
 
 ## Concurrency
 ZeroDB uses [Stately's](https://github.com/touchlab/Stately) synchronization implementation on IO operations and ConcurrentMutableMap for storing ZeroVault instances.
